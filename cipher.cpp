@@ -6,7 +6,6 @@
 using namespace std;
 
 string caesarShift(string message, int shift); 
-void bruteForce(string message);
 
 int main ()
 {
@@ -145,11 +144,25 @@ int main ()
             }
             case 2:
             {
-               // Takes encoded input and calls bruteForce function
+               // Takes encoded input and brute forces shift
                cout <<"Enter the message: " << endl;
                getline(cin, message);
-               bruteForce(message);
-               
+
+               for (int i = 1; i < 26; i++)
+               {
+                  newMessage = caesarShift(message, i);
+                  if (fileControl != 'y')
+                  {
+                     cout << "Message with shift " << i << ":";
+                     cout << newMessage << endl;
+                  }
+                  else
+                  {
+                     outfile << "Message with shift " << i << ":";
+                     outfile << newMessage << endl;
+                  }
+               }
+               cout << "The data has been saved to the file." << endl;
                break;
             }
          }
@@ -204,20 +217,3 @@ string caesarShift(string shiftMessage, int shift)
    }
    return shiftMessage;
 } 
-
-// Inputs: Message to decode
-// Outputs: From inside function outputs each possible shift of message
-void bruteForce(string message)
-{
-   int a = 1;
-   string bruteMessage;
-      
-   // Loops through all possibilities using normal caesar
-   // shift function
-   for (int i = 1; i < 26; i++)
-   {   
-      bruteMessage = caesarShift(message, i);
-      cout << "Message with shift " << i << ":";
-      cout << bruteMessage << endl;
-   }
-}
