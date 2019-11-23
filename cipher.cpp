@@ -2,10 +2,12 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
+#include<bitset>
 
 using namespace std;
 
-string caesarShift(string message, int shift); 
+string caesarShift(string message, int shift);
+void textToBinary(string message);
 
 int main ()
 {
@@ -27,7 +29,7 @@ int main ()
       cout << "Enter the number corresponding to the option";
       cout << " you want: " << endl;
       cin >> menuControl;
-      
+
       // Checking value for encode or decode menu
       if (menuControl == 1)
       {
@@ -36,8 +38,9 @@ int main ()
          cout << "Encoding Menu" << endl;
          cout << "-------------" << endl;
          cout << "1) Caesar Shift" << endl;
+         cout << "2) Text to Binary" << endl;
          cout << "Enter number: " << endl;
-         cin >> menuOptions;   
+         cin >> menuOptions;
 
          // File control
          cout << "Would you like to save your encoded";
@@ -55,13 +58,14 @@ int main ()
             outfile.open(filename);
          }
 
+         cout << endl << "Enter your message: " << endl;
+         getline(cin, message);
+
          switch (menuOptions)
          {  case 1:
             {
                // Taking plaintext input and encoding it using caesarShift
                // with user defined shift value
-               cout << endl << "Enter your message: " << endl;
-               getline(cin, message);
                cout << endl << "Enter shift value: " << endl;
                cin >> shiftVal;
 
@@ -69,7 +73,7 @@ int main ()
 
                // Outputting to terminal if fileControl is no
                if (fileControl == 'n')
-               {  
+               {
                   cout << endl << "Message: " << endl;
                   cout << newMessage << endl << endl;
                }
@@ -81,6 +85,13 @@ int main ()
                   outfile << newMessage;
                   outfile.close();
                }
+               break;
+            }
+            case 2:
+            {
+               // Calling function to output binary conversion
+               // to terminal window
+               textToBinary(message);
                break;
             }
          }
@@ -95,12 +106,11 @@ int main ()
          cout << "1) Caesar Shift (Key Known)" << endl;
          cout << "2) Caesar Shift (Brute Force)" << endl;
          cout << "Enter number: " << endl;
-         cin >> menuOptions;   
+         cin >> menuOptions;
 
          // File control
          cout << "Would you like to save your decoded";
          cout << " message to a file? (y/n)" << endl;
-         cout << "Note: Brute forced messages can not be saved to file." << endl;
          cin >> fileControl;
          cin.ignore();
 
@@ -115,8 +125,8 @@ int main ()
 
          switch(menuOptions)
          {
-            case 1:     
-            {   
+            case 1:
+            {
                // Takes encoded input and passes it to caesarShift function
                // with negative shift value to reverse original encoding
                cout << endl << "Enter the message: " << endl;
@@ -129,7 +139,7 @@ int main ()
 
                // Outputs decoded message to terminal if fileControl is no
                if (fileControl == 'n')
-               {  
+               {
                   cout << endl << "Message: " << endl;
                   cout << newMessage << endl << endl;
                }
@@ -170,7 +180,7 @@ int main ()
       cout << endl << endl;
       cout << "Would you like to encode or decode another message? (y/n)" << endl;
       cin >> contProg;
-      
+
       // Allows user to restart program from menu easily
       if (contProg == 'y')
       {
@@ -189,7 +199,7 @@ int main ()
 string caesarShift(string shiftMessage, int shift)
 {
    int i = 0;
-   
+
    while (i < shiftMessage.size())
    {
       // Checking for upper case characters using ASCII values
@@ -200,7 +210,7 @@ string caesarShift(string shiftMessage, int shift)
          if(shiftMessage[i] > 90)
             shiftMessage[i] = 'A' + (shiftMessage[i] % 91);
       }
-      
+
       // Checking for lower case characters
       else if(shiftMessage[i] > 96 && shiftMessage[i] < (123 - shift))
          shiftMessage[i] = shiftMessage[i] + shift;
@@ -210,10 +220,24 @@ string caesarShift(string shiftMessage, int shift)
       else if(shiftMessage[i] > (122 - shift))
       {
          int dif = 123 - shiftMessage[i];
-         shiftMessage[i] = 'a' - dif + shift; 
+         shiftMessage[i] = 'a' - dif + shift;
       }
       // Loop control
-      i++; 
+      i++;
    }
    return shiftMessage;
-} 
+}
+
+void textToBinary(string message)
+{
+   cout << endl << "Your encoded message: ";
+   cout << endl;
+
+   for (int i = 1; i <= message.size(); i++)
+   {
+      cout << bitset<8>(message[i-1]) << " ";
+      
+      // Breaking up lines for every 5 bytes
+      if (i % 5 == 0)
+         cout << endl;
+   }
