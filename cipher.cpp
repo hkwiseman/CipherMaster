@@ -105,6 +105,7 @@ int main ()
          cout << "-------------" << endl;
          cout << "1) Caesar Shift (Key Known)" << endl;
          cout << "2) Caesar Shift (Brute Force)" << endl;
+         cout << "3) Binary to Text" << endl;
          cout << "Enter number: " << endl;
          cin >> menuOptions;
 
@@ -241,3 +242,4 @@ void textToBinary(string message)
       if (i % 5 == 0)
          cout << endl;
    }
+}
